@@ -2,8 +2,6 @@
 #include <vector>
 #include <time.h>
 #include <windows.h>
-#include <algorithm>
-#include <conio.h>
 #include <string>
 #include <fstream>
 #include "ConsoleColors.h"
@@ -19,11 +17,12 @@ HANDLE hand = GetStdHandle(STD_OUTPUT_HANDLE);
 // - Complete mark
 //
 // Create task - done
-// Edit name, desc, complete status
-// Delete task
-// Save to file
-// Load from file
-// Loop
+// Edit name, desc, complete status - done
+// Delete task - done
+// Save to file - done
+// Load from file - done
+// Loop - done
+// Multifiles
 
 void start();
 
@@ -192,12 +191,91 @@ void completeTask()
 
 void saveTasks()
 {
+	ofstream file;
 
+	file.open("tasks.txt");
+
+	if (file.is_open())
+	{
+		for (int i = 0; i < tasks.size(); i++)
+		{
+			file << tasks[i].title << endl;
+			file << tasks[i].date << endl;
+			file << tasks[i].description << endl;
+
+			if (tasks[i].completed == true)
+			{
+				file << "true" << endl;
+			}
+			else
+			{
+				file << "false" << endl;
+			}
+		}
+
+		SetConsoleTextAttribute(hand, LightGreen);
+		cout << "Все задачи успешно сохранены" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+	else
+	{
+		SetConsoleTextAttribute(hand, Red);
+		cout << "Произошла ошибка при записи в файл" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+
+	file.close();
 }
 
 void loadTasks()
 {
+	ifstream file;
+	string line;
+	Task task;
+	vector<string> lines;
+	int counter = 0;
 
+	file.open("tasks.txt");
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			lines.push_back(line);
+		}
+
+		SetConsoleTextAttribute(hand, LightGreen);
+		cout << "Все задачи успешно загружены" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+	else
+	{
+		SetConsoleTextAttribute(hand, Red);
+		cout << "Произошла ошибка при чтении файла" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+
+	for (int i = 0; i < lines.size() / 4; i++)
+	{
+		task.title = lines[counter];
+		task.date = lines[counter + 1];
+		task.description = lines[counter + 2];
+		
+		if (lines[counter + 3] == "true")
+		{
+			task.completed = true;
+		}
+		else if (lines[counter + 3] == "false")
+		{
+			task.completed = false;
+		}
+		
+		counter += 4;
+
+		tasks.push_back(task);
+	}
+
+	file.close();
 }
 
 // done
@@ -269,7 +347,8 @@ void editTask()
 	}
 }
 
-void start() {
+void start()
+{
 	string input;
 	
 	{
