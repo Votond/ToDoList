@@ -10,8 +10,24 @@
 using namespace std;
 HANDLE hand = GetStdHandle(STD_OUTPUT_HANDLE);
 
+// ToDo List
+//
+// Task: - done
+// - Title
+// - Date of complete
+// - Description
+// - Complete mark
+//
+// Create task - done
+// Edit name, desc, complete status
+// Delete task
+// Save to file
+// Load from file
+// Loop
+
 void start();
 
+// done
 class Task {
 public:
 	string title;
@@ -30,23 +46,6 @@ public:
 };
 
 vector<Task> tasks;
-
-// ToDo List
-//
-// Task: - done
-// - Title
-// - Date of complete
-// - Description
-// - Complete mark
-//
-// Create task - done
-// Edit name, desc, complete status
-// Delete task
-// Save to file
-// Load from file
-// Loop
-
-// done
 
 // done
 void taskForm(Task task, int id)
@@ -97,7 +96,7 @@ void taskForm(Task task, int id)
 }
 
 // done
-void toConsole()
+void tasksToConsole()
 {
 	if (tasks.size() == 0)
 	{
@@ -112,32 +111,32 @@ void toConsole()
 			taskForm(tasks[i], i);
 		}
 	}
-	
-	start();
 }
 
 // done
 void createTask() {
 	string title;
-	string date;
 	string description;
+	string date;
 	Task task;
 	SYSTEMTIME st;
+	
 
 	GetLocalTime(&st);
 	task.date = to_string(st.wDay) + "." + to_string(st.wMonth) + "." + to_string(st.wYear) + "   " + to_string(st.wHour) + ":" + to_string(st.wMinute);
 
-	cout << "Введите название задачи: " << endl;
+	cout << "Введите название задачи: ";
+	cin.ignore();
 	getline(cin, task.title);
 
-	cout << "Введите описание задачи: " << endl;
+	cout << "Введите описание задачи: ";
 	getline(cin, task.description);
 
 	tasks.push_back(task);
 
+	SetConsoleTextAttribute(hand, LightGreen);
 	cout << "Задача создана" << endl;
-
-	start();
+	SetConsoleTextAttribute(hand, White);
 }
 
 // done
@@ -161,10 +160,9 @@ void deleteTask()
 		SetConsoleTextAttribute(hand, White);
 	}
 	
-	SetConsoleTextAttribute(hand, White);
+	SetConsoleTextAttribute(hand, LightGreen);
 	cout << "Задача под номером " << id << " удалена" << endl;
-
-	start();
+	SetConsoleTextAttribute(hand, White);
 }
 
 // done
@@ -187,10 +185,19 @@ void completeTask()
 		SetConsoleTextAttribute(hand, White);
 	}
 
-	SetConsoleTextAttribute(hand, White);
+	SetConsoleTextAttribute(hand, LightGreen);
 	cout << "Задача под номером " << id << " отмечена, как выполненная" << endl;
+	SetConsoleTextAttribute(hand, White);
+}
 
-	start();
+void saveTasks()
+{
+
+}
+
+void loadTasks()
+{
+
 }
 
 // done
@@ -205,7 +212,7 @@ void editTask()
 	cout << "Введите номер задачи, которую вы хотите изменить: ";
 	cin >> id;
 
-	cout << "Введите \"title\" для изменения названия\nВведите \"description\" для изменения описания" << endl;
+	cout << "Введите \"title\" для изменения названия\nВведите \"desc\" для изменения описания" << endl;
 	cin >> input;
 
 	if (input == "title")
@@ -215,7 +222,7 @@ void editTask()
 
 		try
 		{
-			cout << tasks[id].title;
+			cout << tasks[id].title << endl;
 		}
 		catch (const std::exception& ex)
 		{
@@ -225,21 +232,23 @@ void editTask()
 		}
 
 		SetConsoleTextAttribute(hand, White);
-		cout << "Введите новое название задачи: ";
+		cout << "Введите новое название задачи: " << endl;
+		cin.ignore();
 		getline(cin, tasks[id].title);
 
 		cout << "Новое название задачи: ";
 		SetConsoleTextAttribute(hand, Yellow);
-		cout << tasks[id].title;
+		cout << tasks[id].title << endl;
+		SetConsoleTextAttribute(hand, White);
 	}
-	else if (input == "description")
+	else if (input == "desc")
 	{
 		cout << "Текущее описание задачи: ";
 		SetConsoleTextAttribute(hand, Cyan);
 
 		try
 		{
-			cout << tasks[id].description;
+			cout << tasks[id].description << endl;
 		}
 		catch (const std::exception& ex)
 		{
@@ -249,33 +258,26 @@ void editTask()
 		}
 
 		SetConsoleTextAttribute(hand, White);
-		cout << "Введите новое описание задачи: ";
+		cout << "Введите новое описание задачи: " << endl;
+		cin.ignore();
 		getline(cin, tasks[id].description);
 
 		cout << "Новое описание задачи: ";
 		SetConsoleTextAttribute(hand, Cyan);
-		cout << tasks[id].description;
+		cout << tasks[id].description << endl;
+		SetConsoleTextAttribute(hand, White);
 	}
-
-	start();
 }
 
 void start() {
 	string input;
-
-	SetConsoleTextAttribute(hand, White);
-	cout << "-----===";
-	SetConsoleTextAttribute(hand, Cyan);
-	cout << " ToDo List ";
-	SetConsoleTextAttribute(hand, White);
-	cout << "===-----" << endl;
 	
 	{
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
-		cout << "\"create\"";
+		cout << "\"new\"";
 		SetConsoleTextAttribute(hand, White);
-		cout << " для создания задачи" << endl;
+		cout << " для создания новой задачи" << endl;
 
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
@@ -285,13 +287,13 @@ void start() {
 
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
-		cout << "\"complete\"";
+		cout << "\"comp\"";
 		SetConsoleTextAttribute(hand, White);
 		cout << " для выполнения задачи" << endl;
 
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
-		cout << "\"delete\"";
+		cout << "\"del\"";
 		SetConsoleTextAttribute(hand, White);
 		cout << " для удаления задачи" << endl;
 
@@ -322,19 +324,19 @@ void start() {
 
 	cin >> input;
 
-	if (input == "create")
+	if (input == "new")
 	{
 		createTask();
 	}
 	else if (input == "view")
 	{
-		toConsole();
+		tasksToConsole();
 	}
-	else if (input == "complete")
+	else if (input == "comp")
 	{
 		completeTask();
 	}
-	else if (input == "delete")
+	else if (input == "del")
 	{
 		deleteTask();
 	}
@@ -344,11 +346,11 @@ void start() {
 	}
 	else if (input == "save")
 	{
-		
+		saveTasks();
 	}
 	else if (input == "load")
 	{
-		
+		loadTasks();
 	}
 	else if (input == "exit")
 	{
@@ -359,15 +361,24 @@ void start() {
 		SetConsoleTextAttribute(hand, Red);
 		cout << "Некорректный ввод" << endl;
 		SetConsoleTextAttribute(hand, White);
-
-		start();
 	}
+
+	start();
 }
 
 // done
 int main()
 {
 	setlocale(LC_ALL, "RUSSIAN");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	SetConsoleTextAttribute(hand, White);
+	cout << "-----===";
+	SetConsoleTextAttribute(hand, Cyan);
+	cout << " ToDo List ";
+	SetConsoleTextAttribute(hand, White);
+	cout << "===-----" << endl;
 
 	start();
 
