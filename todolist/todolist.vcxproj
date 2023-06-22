@@ -127,10 +127,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="completeTask.cpp" />
+    <ClCompile Include="createTask.cpp" />
+    <ClCompile Include="deleteTask.cpp" />
+    <ClCompile Include="editTask.cpp" />
+    <ClCompile Include="favoriteTask.cpp" />
+    <ClCompile Include="loadTasks.cpp" />
+    <ClCompile Include="saveTasks.cpp" />
+    <ClCompile Include="start.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="taskForm.cpp" />
+    <ClCompile Include="tasksToConsole.cpp" />
     <ClCompile Include="todolist.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="completeTask.h" />
     <ClInclude Include="ConsoleColors.h" />
+    <ClInclude Include="createTask.h" />
+    <ClInclude Include="deleteTask.h" />
+    <ClInclude Include="editTask.h" />
+    <ClInclude Include="favoriteTask.h" />
+    <ClInclude Include="loadTasks.h" />
+    <ClInclude Include="saveTasks.h" />
+    <ClInclude Include="start.h" />
+    <ClInclude Include="Task.h" />
+    <ClInclude Include="taskForm.h" />
+    <ClInclude Include="tasksToConsole.h" />
+    <ClInclude Include="vec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
