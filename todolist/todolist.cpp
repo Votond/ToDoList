@@ -17,10 +17,11 @@ HANDLE hand = GetStdHandle(STD_OUTPUT_HANDLE);
 // - Complete mark
 //
 // Create task - done
-// Edit name, desc, complete status - done
+// Edit title, desc, complete status - done
 // Delete task - done
 // Save to file - done
 // Load from file - done
+// Favorites - done
 // Loop - done
 // Multifiles
 
@@ -33,6 +34,7 @@ public:
 	string date;
 	string description;
 	bool completed = false;
+	bool favorite = false;
 
 	Task(string title, string date, string description)
 	{
@@ -86,6 +88,19 @@ void taskForm(Task task, int id)
 		break;
 	}
 
+	switch (task.favorite)
+	{
+	case true:
+		SetConsoleTextAttribute(hand, Yellow);
+		cout << "Задача в избранном" << endl;
+		break;
+
+	case false:
+		SetConsoleTextAttribute(hand, Gray);
+		cout << "Задача не в избранном" << endl;
+		break;
+	}
+
 	SetConsoleTextAttribute(hand, White);
 	for (int i = 0; i < size; i++)
 	{
@@ -108,6 +123,70 @@ void tasksToConsole()
 		for (int i = 0; i < tasks.size(); i++)
 		{
 			taskForm(tasks[i], i);
+		}
+	}
+}
+
+// done
+void tasksToConsole(string type)
+{
+	if (type == "comp")
+	{
+		if (tasks.size() == 0)
+		{
+			SetConsoleTextAttribute(hand, Red);
+			cout << "Задачи отсутствуют" << endl;
+			SetConsoleTextAttribute(hand, White);
+		}
+		else
+		{
+			for (int i = 0; i < tasks.size(); i++)
+			{
+				if (tasks[i].completed == true)
+				{
+					taskForm(tasks[i], i);
+				}
+			}
+		}
+	}
+	else if (type == "uncomp")
+	{
+		if (tasks.size() == 0)
+		{
+			SetConsoleTextAttribute(hand, Red);
+			cout << "Задачи отсутствуют" << endl;
+			SetConsoleTextAttribute(hand, White);
+		}
+		else
+		{
+			for (int i = 0; i < tasks.size(); i++)
+			{
+				if (tasks[i].completed == false)
+				{
+					taskForm(tasks[i], i);
+				}
+
+			}
+		}
+	}
+	else if (type == "fav")
+	{
+		if (tasks.size() == 0)
+		{
+			SetConsoleTextAttribute(hand, Red);
+			cout << "Задачи отсутствуют" << endl;
+			SetConsoleTextAttribute(hand, White);
+		}
+		else
+		{
+			for (int i = 0; i < tasks.size(); i++)
+			{
+				if (tasks[i].favorite == true)
+				{
+					taskForm(tasks[i], i);
+				}
+
+			}
 		}
 	}
 }
@@ -185,10 +264,64 @@ void completeTask()
 	}
 
 	SetConsoleTextAttribute(hand, LightGreen);
-	cout << "Задача под номером " << id << " отмечена, как выполненная" << endl;
+	cout << "Задача под номером " << id << " отмечена как выполненная" << endl;
 	SetConsoleTextAttribute(hand, White);
 }
 
+// done
+void favoriteTask()
+{
+	int id;
+
+	SetConsoleTextAttribute(hand, White);
+	cout << "Введите номер задачи, которую вы хотите сделать избранной: ";
+	cin >> id;
+
+	try
+	{
+		tasks[id].favorite = true;
+	}
+	catch (const std::exception& ex)
+	{
+		SetConsoleTextAttribute(hand, Red);
+		cout << "Задачи под введённым номером не существует" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+
+	SetConsoleTextAttribute(hand, LightGreen);
+	cout << "Задача под номером " << id << " отмечена как избранная" << endl;
+	SetConsoleTextAttribute(hand, White);
+}
+
+// done
+void favoriteTask(string action)
+{
+	int id;
+
+	if (action == "unelect")
+	{
+		SetConsoleTextAttribute(hand, White);
+		cout << "Введите номер задачи, которую вы хотите убрать из избранных: ";
+		cin >> id;
+
+		try
+		{
+			tasks[id].favorite = false;
+		}
+		catch (const std::exception& ex)
+		{
+			SetConsoleTextAttribute(hand, Red);
+			cout << "Задачи под введённым номером не существует" << endl;
+			SetConsoleTextAttribute(hand, White);
+		}
+
+		SetConsoleTextAttribute(hand, LightGreen);
+		cout << "Задача под номером " << id << " убрана из избранных" << endl;
+		SetConsoleTextAttribute(hand, White);
+	}
+}
+
+// done
 void saveTasks()
 {
 	ofstream file;
@@ -204,6 +337,15 @@ void saveTasks()
 			file << tasks[i].description << endl;
 
 			if (tasks[i].completed == true)
+			{
+				file << "true" << endl;
+			}
+			else
+			{
+				file << "false" << endl;
+			}
+
+			if (tasks[i].favorite == true)
 			{
 				file << "true" << endl;
 			}
@@ -227,6 +369,7 @@ void saveTasks()
 	file.close();
 }
 
+// done
 void loadTasks()
 {
 	ifstream file;
@@ -255,7 +398,7 @@ void loadTasks()
 		SetConsoleTextAttribute(hand, White);
 	}
 
-	for (int i = 0; i < lines.size() / 4; i++)
+	for (int i = 0; i < lines.size() / 5; i++)
 	{
 		task.title = lines[counter];
 		task.date = lines[counter + 1];
@@ -270,7 +413,16 @@ void loadTasks()
 			task.completed = false;
 		}
 		
-		counter += 4;
+		if (lines[counter + 4] == "true")
+		{
+			task.favorite = true;
+		}
+		else if (lines[counter + 4] == "false")
+		{
+			task.favorite = false;
+		}
+
+		counter += 5;
 
 		tasks.push_back(task);
 	}
@@ -347,6 +499,7 @@ void editTask()
 	}
 }
 
+// done
 void start()
 {
 	string input;
@@ -362,13 +515,43 @@ void start()
 		SetConsoleTextAttribute(hand, Cyan);
 		cout << "\"view\"";
 		SetConsoleTextAttribute(hand, White);
-		cout << " для просмотра задач" << endl;
+		cout << " для просмотра всех задач" << endl;
+
+		cout << "Введите ";
+		SetConsoleTextAttribute(hand, Cyan);
+		cout << "\"c\"";
+		SetConsoleTextAttribute(hand, White);
+		cout << " для просмотра завершенных задач" << endl;
+
+		cout << "Введите ";
+		SetConsoleTextAttribute(hand, Cyan);
+		cout << "\"unc\"";
+		SetConsoleTextAttribute(hand, White);
+		cout << " для просмотра незавершенных задач" << endl;
+
+		cout << "Введите ";
+		SetConsoleTextAttribute(hand, Cyan);
+		cout << "\"f\"";
+		SetConsoleTextAttribute(hand, White);
+		cout << " для просмотра избранных задач" << endl;
 
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
 		cout << "\"comp\"";
 		SetConsoleTextAttribute(hand, White);
 		cout << " для выполнения задачи" << endl;
+
+		cout << "Введите ";
+		SetConsoleTextAttribute(hand, Cyan);
+		cout << "\"elect\"";
+		SetConsoleTextAttribute(hand, White);
+		cout << " для добавление задачи в избранное" << endl;
+
+		cout << "Введите ";
+		SetConsoleTextAttribute(hand, Cyan);
+		cout << "\"unelect\"";
+		SetConsoleTextAttribute(hand, White);
+		cout << " для удаления задачи из избранных" << endl;
 
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
@@ -411,9 +594,29 @@ void start()
 	{
 		tasksToConsole();
 	}
+	else if (input == "unc")
+	{
+		tasksToConsole("uncomp");
+	}
+	else if (input == "c")
+	{
+		tasksToConsole("comp");
+	}
+	else if (input == "f")
+	{
+		tasksToConsole("fav");
+	}
 	else if (input == "comp")
 	{
 		completeTask();
+	}
+	else if (input == "elect")
+	{
+		favoriteTask();
+	}
+	else if (input == "unelect")
+	{
+		favoriteTask("unelect");
 	}
 	else if (input == "del")
 	{
