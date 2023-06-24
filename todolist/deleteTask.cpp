@@ -14,11 +14,13 @@ void deleteTask()
 {
 	int id;
 
+	// Ввод номера задачи для удаления
 	SetConsoleTextAttribute(hand, White);
 	cout << "Введите номер задачи для удаления: ";
 
 	cin >> id;
 
+	// Удаление задачи
 	try
 	{
 		tasks.erase(tasks.begin() + id);
@@ -30,6 +32,7 @@ void deleteTask()
 		SetConsoleTextAttribute(hand, White);
 	}
 
+	// Информация о удалении задачи
 	SetConsoleTextAttribute(hand, LightGreen);
 	cout << "Задача под номером " << id << " удалена" << endl;
 	SetConsoleTextAttribute(hand, White);

@@ -1,5 +1,6 @@
 #pragma once
 
+// Перечисление цветов консоли
 enum Colors
 {
 	Black = 0,

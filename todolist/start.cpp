@@ -23,6 +23,7 @@ void start()
 {
 	string input;
 
+	// Вывод всех доступных ключевых слов для использования пользователем
 	{
 		cout << "Введите ";
 		SetConsoleTextAttribute(hand, Cyan);
@@ -105,6 +106,7 @@ void start()
 
 	cin >> input;
 
+	// Проверка на введённое ключевое слово
 	if (input == "new")
 	{
 		createTask();
@@ -159,6 +161,7 @@ void start()
 	}
 	else
 	{
+		// Информация о некорректном вводе
 		SetConsoleTextAttribute(hand, Red);
 		cout << "Некорректный ввод" << endl;
 		SetConsoleTextAttribute(hand, White);

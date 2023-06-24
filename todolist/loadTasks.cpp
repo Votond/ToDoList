@@ -12,60 +12,71 @@ using namespace std;
 
 void loadTasks()
 {
+	// Объявление файлового потока file
 	ifstream file;
 	string line;
 	Task task;
 	vector<string> lines;
 	int counter = 0;
 
+	// Открытие файла tasks.txt для чтения
 	file.open("tasks.txt");
 
+	// Проверка на открытие файла
 	if (file.is_open())
 	{
+		// Получение содержимого файла и занесение в вектор
 		while (getline(file, line))
 		{
 			lines.push_back(line);
 		}
 
+		// Заполнение полей объекта task
+		for (int i = 0; i < lines.size() / 5; i++)
+		{
+			task.title = lines[counter];
+			task.date = lines[counter + 1];
+			task.description = lines[counter + 2];
+			
+			// 2 конструкции для установки булевого поля
+			if (lines[counter + 3] == "true")
+			{
+				task.completed = true;
+			}
+			else if (lines[counter + 3] == "false")
+			{
+				task.completed = false;
+			}
+
+			if (lines[counter + 4] == "true")
+			{
+				task.favorite = true;
+			}
+			else if (lines[counter + 4] == "false")
+			{
+				task.favorite = false;
+			}
+
+			// Счётчик
+			counter += 5;
+
+			// Занесение объекта в вектор
+			tasks.push_back(task);
+		}
+
+		// Информация о успешной загрузке
 		SetConsoleTextAttribute(hand, LightGreen);
 		cout << "Все задачи успешно загружены" << endl;
 		SetConsoleTextAttribute(hand, White);
 	}
 	else
 	{
+		// Информация об ошибке при чтении файла
 		SetConsoleTextAttribute(hand, Red);
 		cout << "Произошла ошибка при чтении файла" << endl;
 		SetConsoleTextAttribute(hand, White);
 	}
 
-	for (int i = 0; i < lines.size() / 5; i++)
-	{
-		task.title = lines[counter];
-		task.date = lines[counter + 1];
-		task.description = lines[counter + 2];
-
-		if (lines[counter + 3] == "true")
-		{
-			task.completed = true;
-		}
-		else if (lines[counter + 3] == "false")
-		{
-			task.completed = false;
-		}
-
-		if (lines[counter + 4] == "true")
-		{
-			task.favorite = true;
-		}
-		else if (lines[counter + 4] == "false")
-		{
-			task.favorite = false;
-		}
-
-		counter += 5;
-
-		tasks.push_back(task);
-	}
-
+	// Закрытие файла
 	file.close();
 }

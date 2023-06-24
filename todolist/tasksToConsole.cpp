@@ -11,8 +11,10 @@
 #include "taskForm.h"
 using namespace std;
 
+// Функция для вывода всех задач
 void tasksToConsole()
 {
+	// Вывод всех задач
 	if (tasks.size() == 0)
 	{
 		SetConsoleTextAttribute(hand, Red);
@@ -28,8 +30,10 @@ void tasksToConsole()
 	}
 }
 
+// Переопределение функции для вывода определенных задач
 void tasksToConsole(string type)
 {
+	// Вывод только выполенных задач
 	if (type == "comp")
 	{
 		if (tasks.size() == 0)
@@ -49,6 +53,7 @@ void tasksToConsole(string type)
 			}
 		}
 	}
+	// Вывод только невыполненных задач
 	else if (type == "uncomp")
 	{
 		if (tasks.size() == 0)
@@ -69,6 +74,7 @@ void tasksToConsole(string type)
 			}
 		}
 	}
+	// Вывод только избранных задач
 	else if (type == "fav")
 	{
 		if (tasks.size() == 0)

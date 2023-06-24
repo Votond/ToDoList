@@ -16,15 +16,19 @@ void editTask()
 	string description;
 	int id;
 
+	// Ввод номера задачи для изменения
 	SetConsoleTextAttribute(hand, White);
 	cout << "Введите номер задачи, которую вы хотите изменить: ";
 	cin >> id;
 
+	// Пользователю даётся выбор между изменением названия и описания
 	cout << "Введите \"title\" для изменения названия\nВведите \"desc\" для изменения описания" << endl;
 	cin >> input;
 
+	// На основе выбора пользователя выполняется условие
 	if (input == "title")
 	{
+		// Вывод текущего названия задачи
 		cout << "Текущее название задачи: ";
 		SetConsoleTextAttribute(hand, Yellow);
 
@@ -39,11 +43,13 @@ void editTask()
 			SetConsoleTextAttribute(hand, White);
 		}
 
+		// Ввод пользователем нового названия задачи
 		SetConsoleTextAttribute(hand, White);
 		cout << "Введите новое название задачи: " << endl;
 		cin.ignore();
 		getline(cin, tasks[id].title);
 
+		// Вывод нового названия задачи
 		cout << "Новое название задачи: ";
 		SetConsoleTextAttribute(hand, Yellow);
 		cout << tasks[id].title << endl;
@@ -51,6 +57,7 @@ void editTask()
 	}
 	else if (input == "desc")
 	{
+		// Вывод текущего описания задачи
 		cout << "Текущее описание задачи: ";
 		SetConsoleTextAttribute(hand, Cyan);
 
@@ -65,11 +72,13 @@ void editTask()
 			SetConsoleTextAttribute(hand, White);
 		}
 
+		// Ввод пользователем нового описания задачи
 		SetConsoleTextAttribute(hand, White);
 		cout << "Введите новое описание задачи: " << endl;
 		cin.ignore();
 		getline(cin, tasks[id].description);
 
+		// Вывод нового описания задачи
 		cout << "Новое описание задачи: ";
 		SetConsoleTextAttribute(hand, Cyan);
 		cout << tasks[id].description << endl;

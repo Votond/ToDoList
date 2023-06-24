@@ -14,10 +14,12 @@ void completeTask()
 {
 	int id;
 
+	// Ввод номера задачи
 	SetConsoleTextAttribute(hand, White);
 	cout << "Введите номер задачи, которую вы выполнили: ";
 	cin >> id;
 
+	// Изменение отметки о выполненности задачи
 	try
 	{
 		tasks[id].completed = true;
@@ -29,6 +31,7 @@ void completeTask()
 		SetConsoleTextAttribute(hand, White);
 	}
 
+	// Если задача отмечена, то выводится информация об этом
 	SetConsoleTextAttribute(hand, LightGreen);
 	cout << "Задача под номером " << id << " отмечена как выполненная" << endl;
 	SetConsoleTextAttribute(hand, White);
