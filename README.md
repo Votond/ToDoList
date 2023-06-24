@@ -13,3 +13,4 @@
 - Delete task
 - Save to file
 - Load from file
+- Sort tasks by completed, uncompleted and favorites
