@@ -18,11 +18,11 @@ int main()
 
 	// Вывод заголовка "ToDo List"
 	SetConsoleTextAttribute(hand, White);
-	cout << "-----===";
+	cout << "------------------===";
 	SetConsoleTextAttribute(hand, Cyan);
 	cout << " ToDo List ";
 	SetConsoleTextAttribute(hand, White);
-	cout << "===-----" << endl;
+	cout << "===------------------" << endl;
 	
 	// Старт приложения
 	start();
